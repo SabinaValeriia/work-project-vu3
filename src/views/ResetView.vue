@@ -4,10 +4,9 @@
     img(src="../assets/logo.svg")
     //- img(:src="require(`@/assets/logo.svg)`)")
     .login-block__box
-      h1 Log in to your Quentn account
-      h2 Not a member?
-        span 
-          a(href="/registration", target="_blank") Sign up
+      a(href="/login", target="_blank") Go to login
+      h1 Reset password
+      h2 We'll email you instructions on how to reset your password.
       form
         .input-group
           label.none(for="email") Email
@@ -19,32 +18,7 @@
             :class="{ error: v$.$error }"
           )
           span.error(v-for="(error, index) in v$.email.$errors", :key="index") {{ error.$message }}
-        .input-group
-          label.none(for="password") Password
-          input#password.form-control.form--input(
-            onfocus="document.querySelector('label[for=password]').style.display = 'block';",
-            :type="[showPassword ? 'text' : 'password']",
-            v-model="v$.password.$model",
-            placeholder="Password",
-            :class="{ error: v$.$error }"
-          )
-          button.password(@click.prevent="showPassword = !showPassword") Show
-        h3
-          a(href="/reset", target="_blank") Forgot your password?
-        button(@click.prevent="addExternalResults()") Log in
-  #confirm.login-block.hide
-    img(src="../assets/logo.svg")
-    .login-block__box.login-block__confirm
-      h1 Confirm your email
-      p Please check your inbox for a confirmation email. Click the link in the email to confirm your email address.
-      button(@click.prevent="resendLink()") Re-send confirmation link
-  #login-page.login-block.hide
-    img(src="../assets/logo.svg")
-    .login-block__box.login-block__confirm
-      h1 Congratulations!
-      p Your email has been confirmed. You can now login to the system
-      button
-        a(href="/login") Go to Login
+        button(@click.prevent="addExternalResults()") Reset password
   .login-bg
 </template>
 
@@ -52,16 +26,10 @@
 import { ref } from "vue";
 import useVuelidate from "@vuelidate/core";
 import { email } from "@vuelidate/validators";
-const showPassword = ref(false);
+
 let rules = {
   email: {
     email,
-    name_validation: {
-      $message: "Incorrect format",
-    },
-  },
-  password: {
-    require,
     name_validation: {
       $message: "Incorrect format",
     },
@@ -70,48 +38,21 @@ let rules = {
 
 const form = ref({
   email: "",
-  password: "",
 });
 const $externalResults = ref({
   email: "",
-  password: "",
 });
-
-const v$ = useVuelidate(rules, form, { $externalResults });
-
 const addExternalResults = () => {
-  if (!form.value.email && !form.value.password) {
+  if (!form.value.email) {
     $externalResults.value = {
       email: "Require",
-      password: "Require",
     };
     v$.value.$validate();
-  } else {
-    var element = document.getElementById("login");
-
-    document.getElementById("login")?.classList.add("hide");
-    document.getElementById("confirm")?.classList.remove("hide");
-    document.getElementById("confirm")?.classList.add("block");
   }
 };
-const resendLink = () => {
-  document.getElementById("confirm")?.classList.add("hide");
-  document.getElementById("login-page")?.classList.add("block");
-};
+const v$ = useVuelidate(rules, form, { $externalResults });
 </script>
 <style lang="scss" scoped>
-#login-page.login-block.block {
-  display: block;
-}
-#confirm.login-block.block {
-  display: block;
-}
-#confirm.login-block.hide {
-  display: none;
-}
-.hide {
-  display: none;
-}
 .input-group {
   position: relative;
   display: flex;
@@ -177,6 +118,24 @@ const resendLink = () => {
     &__box {
       margin: 58px 193px 0 198px;
     }
+    a {
+      font-family: "Poppins";
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 24px;
+      color: #959b9d;
+      text-decoration: none;
+      &::before {
+        display: inline-block;
+        content: "";
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+        background-image: url("../assets/right-arrow.svg");
+        background-repeat: no-repeat;
+      }
+    }
     h1 {
       font-family: "Poppins";
       font-style: normal;
@@ -200,17 +159,6 @@ const resendLink = () => {
           text-decoration: none;
           margin-left: 5px;
         }
-      }
-    }
-    h3 {
-      a {
-        font-family: "Inter";
-        font-style: normal;
-        font-weight: 600;
-        font-size: 18px;
-        line-height: 28px;
-        color: #000000;
-        cursor: pointer;
       }
     }
     input {

@@ -9,33 +9,34 @@
         span 
           a(href="/login", target="_blank") Log in
       form
-        .input-group(
-          :class="{ valid: !v$.$error && v$.$dirty, error: v$.$error }"
-        )
-          label.hide(for="InputEmail") Name
-          input.form-control.form--input(
+        .input-group
+          label.none(for="name") Name
+          input#name.form-control.form--input(
+            onfocus="document.querySelector('label[for=name]').style.display = 'block';",
             type="text",
             v-model="v$.name.$model",
-            placeholder="Name"
+            placeholder="Name",
+            :class="{ valid: !v$.$error && v$.$dirty, error: v$.$error }"
           )
           span.error(v-for="(error, index) in v$.name.$errors", :key="index") {{ error.$message }}
-        .input-group(
-          :class="{ valid: !v$.$error && v$.$dirty, error: v$.$error }"
-        )
-          label.hide(for="InputEmail") Email
+        .input-group
+          label.none(for="email") Email
           input.form-control.form--input(
+            onfocus="document.querySelector('label[for=email]').style.display = 'block';",
             type="text",
             v-model="v$.email.$model",
-            placeholder="Email"
+            placeholder="Email",
+            :class="{ error: v$.$error }"
           )
           span.error(v-for="(error, index) in v$.email.$errors", :key="index") {{ error.$message }}
-        .input-group(
-          :class="{ valid: !v$.$error && v$.$dirty, error: v$.$error }"
-        )
+        .input-group
+          label.none(for="password") Password
           input#password.form-control.form--input(
+            onfocus="document.querySelector('label[for=password]').style.display = 'block';",
             :type="[showPassword ? 'text' : 'password']",
             v-model="v$.password.$model",
-            placeholder="Password"
+            placeholder="Password",
+            :class="{ error: v$.$error }"
           )
           button.password(@click.prevent="showPassword = !showPassword") Show
         .login-block__error
@@ -49,20 +50,6 @@
           :key="index"
         ) {{ error.$message }}
         button(@click.prevent="addExternalResults()") Create an account
-        .static(:class="{ active: isActive, 'text-danger': hasError }")
-  #confirm.login-block.hide
-    img(src="../assets/logo.svg")
-    .login-block__box.login-block__confirm
-      h1 Confirm your email
-      p Please check your inbox for a confirmation email. Click the link in the email to confirm your email address.
-      button(@click.prevent="resendLink()") Re-send confirmation link
-  #login-page.login-block.hide
-    img(src="../assets/logo.svg")
-    .login-block__box.login-block__confirm
-      h1 Congratulations!
-      p Your email has been confirmed. You can now login to the system
-      button
-        a(href="/login") Go to Login
   .login-bg
 </template>
 
@@ -167,14 +154,17 @@ const form = ref({
   email: "",
   password: "",
 });
-const $externalResults = ref({});
-
-const v$ = useVuelidate(rules, form, { $externalResults });
-
+const $externalResults = ref({
+  name: "",
+  email: "",
+  password: "",
+});
 const addExternalResults = () => {
-  if (!form.value.name) {
+  if (!form.value.email && !form.value.password && !form.value.name) {
     $externalResults.value = {
-      email: ["Required"],
+      email: "Require",
+      password: "Require",
+      name: "",
     };
     v$.value.$validate();
   } else {
@@ -185,10 +175,7 @@ const addExternalResults = () => {
     document.getElementById("confirm")?.classList.add("block");
   }
 };
-const resendLink = () => {
-  document.getElementById("confirm")?.classList.add("hide");
-  document.getElementById("login-page")?.classList.add("block");
-};
+const v$ = useVuelidate(rules, form, { $externalResults });
 </script>
 <style lang="scss" scoped>
 #login-page.login-block.block {
@@ -214,7 +201,7 @@ const resendLink = () => {
     margin: 40px 0 40px 0;
   }
 
-  label.hide {
+  label.none {
     display: none;
     margin-bottom: -30px;
     font-style: normal;
@@ -222,16 +209,7 @@ const resendLink = () => {
     font-size: 12px;
     line-height: 16px;
     color: var(--dark-charcoal);
-    &.error {
-      display: block;
-    }
   }
-  .input-group label:focus {
-    position: absolute;
-    display: block;
-    bottom: 28px;
-  }
-
   .form--input {
     padding: 0;
 
@@ -247,10 +225,18 @@ const resendLink = () => {
     font-size: 18px;
     line-height: 28px;
     color: var(--cod-gray);
-
+    &:focus {
+      label {
+        display: block;
+        margin-bottom: 40px;
+      }
+    }
     &::placeholder {
       color: var(--dark-charcoal);
     }
+  }
+  .form--input.error {
+    border-bottom: 1px solid #d93025;
   }
 }
 
@@ -285,8 +271,13 @@ const resendLink = () => {
       font-size: 18px;
       line-height: 28px;
       color: #060606;
+      margin: 0 0 40px 0;
       span {
-        color: #00aed8;
+        a {
+          color: #00aed8;
+          text-decoration: none;
+          margin-left: 5px;
+        }
       }
     }
     input {

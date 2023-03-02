@@ -19,6 +19,17 @@ const routes: Array<RouteRecordRaw> = [
         /* webpackChunkName: "registration" */ "../views/RegistrationView.vue"
       ),
   },
+  {
+    path: "/reset",
+    name: "ResetView",
+    component: () =>
+      import(/* webpackChunkName: "reset" */ "../views/ResetView.vue"),
+  },
+  {
+    path: "/test",
+    name: "Test",
+    component: () => import(/* webpackChunkName: "test" */ "../views/TestView.vue"),
+  },
 ];
 
 export default routes;
