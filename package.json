@@ -74,8 +74,9 @@
     },
     "rules": {
       "@typescript-eslint/ban-ts-comment": "off",
-      "noImplicitAny": false,
-      "@typescript-eslint/no-explicit-any": ["off"]
+      "@typescript-eslint/no-explicit-any": [
+        "off"
+      ]
     },
     "overrides": [
       {

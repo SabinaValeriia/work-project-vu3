@@ -30,5 +30,4 @@ if (process.env.NODE_ENV === "production") {
     logErrors: true,
   });
 }
-
 app.use(pinia).use(router).mount("#app");

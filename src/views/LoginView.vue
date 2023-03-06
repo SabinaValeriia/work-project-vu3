@@ -26,7 +26,7 @@
             :type="[showPassword ? 'text' : 'password']",
             v-model="v$.password.$model",
             placeholder="Password",
-            :class="{ error: v$.$error }"
+            :class="{ error: v$.$error && !v$.$error }"
           )
           button.password(@click.prevent="showPassword = !showPassword") Show
         h3
@@ -80,11 +80,11 @@ const $externalResults = ref({
 const v$ = useVuelidate(rules, form, { $externalResults });
 
 const addExternalResults = () => {
-  if (!form.value.email && !form.value.password) {
-    $externalResults.value = {
-      email: "Require",
-      password: "Require",
-    };
+  if (!form.value.email) {
+    $externalResults.value.email = "Required";
+    v$.value.$validate();
+  } else if (!form.value.password) {
+    $externalResults.value.password = "Required";
     v$.value.$validate();
   } else {
     var element = document.getElementById("login");
@@ -211,6 +211,9 @@ const resendLink = () => {
         line-height: 28px;
         color: #000000;
         cursor: pointer;
+        display: flex;
+        justify-content: right;
+        text-decoration: none;
       }
     }
     input {
