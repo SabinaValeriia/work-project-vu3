@@ -37,6 +37,14 @@ const routes: Array<RouteRecordRaw> = [
     component: () =>
       import(/* webpackChunkName: "recipe" */ "../views/RecipeView.vue"),
   },
+  {
+    path: "/pagination",
+    name: "Pagination",
+    component: () =>
+      import(
+        /* webpackChunkName: "pagination" */ "../views/PaginationView.vue"
+      ),
+  },
 ];
 
 export default routes;
