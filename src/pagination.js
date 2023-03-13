@@ -3,7 +3,7 @@ import { ref, computed } from "vue";
 export default function handlePagination() {
   let page = ref(1);
 
-  const data = Array.from(Array(24).keys()).map((item) => {
+  const data = Array.from(Array(50).keys()).map((item) => {
     return { index: item, value: `this_${item}` };
   });
 
