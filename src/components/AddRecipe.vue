@@ -29,9 +29,9 @@
 
 <script lang="ts">
 // @ts-ignore
-import { useToggle } from "../composition/toggle.js";
+import { useToggle } from "../composable/toggle.js";
 // @ts-ignore
-import { useForm } from "../composition/form.js";
+import { useForm } from "../composable/form.js";
 export default {
   setup(props: any) {
     const { visible: show, toggle: changeShow } = useToggle();

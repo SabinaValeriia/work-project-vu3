@@ -1,33 +1,27 @@
-<template>
-  <div class="pagination">
-    <div v-for="item in paginatedData" :key="item.index">
-      {{ item.value }}
-    </div>
-    <button class="prev" @click="backPage">Prev</button>
-    <button
-      class="item"
-      v-for="item in Math.ceil(data.length / perPage)"
-      :key="item"
-      @click="() => goToPage(item)"
-    >
-      {{ item }}
-    </button>
-    <button class="next" @click="nextPage">Next</button>
-  </div>
+<template lang="pug">
+.pagination
+  div(v-for="item in paginatedData", :key="item.index") 
+    div(v-if="item.value") {{ item.value }}
+  button.prev(@click="backPage") Prev
+  button.item(
+    v-for="item in Math.ceil(dataArray.length / perPage)",
+    :key="item",
+    @click="() => goToPage(item)"
+  ) {{ item }}
+  button.next(@click="nextPage") Next
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 // @ts-ignore
-import handlePagination from "../pagination.js";
-
-export default {
-  name: "App",
-  setup() {
-    const handlePaginationValue = handlePagination();
-
-    return { ...handlePaginationValue };
-  },
-};
+import {
+  paginatedData,
+  dataArray,
+  perPage,
+  page,
+  nextPage,
+  backPage,
+  goToPage,
+} from "../composable/pagination.js";
 </script>
 
 <style lang="scss">

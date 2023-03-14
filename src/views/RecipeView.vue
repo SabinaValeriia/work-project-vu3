@@ -14,7 +14,7 @@ import AddRecipe from "../components/AddRecipe.vue";
 import RecipeDetail from "../components/RecipeDetail.vue";
 import RecipeList from "../components/RecipeList.vue";
 // @ts-ignore
-import { useRecipes } from "../composition/recipes.js";
+import { useRecipes } from "../composable/recipes.js";
 
 export default {
   name: "app",

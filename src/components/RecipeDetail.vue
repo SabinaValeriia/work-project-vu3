@@ -14,7 +14,7 @@
 </template>
 
 <script lang="js">
-import { useToggle } from "../composition/toggle";
+import { useToggle } from "../composable/toggle";
 import { watch } from "vue";
 
 export default {

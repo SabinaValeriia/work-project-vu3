@@ -38,12 +38,10 @@ const routes: Array<RouteRecordRaw> = [
       import(/* webpackChunkName: "recipe" */ "../views/RecipeView.vue"),
   },
   {
-    path: "/pagination",
-    name: "Pagination",
+    path: "/cart",
+    name: "Cart",
     component: () =>
-      import(
-        /* webpackChunkName: "pagination" */ "../views/PaginationView.vue"
-      ),
+      import(/* webpackChunkName: "cart" */ "../views/CartView.vue"),
   },
 ];
 
